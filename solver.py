@@ -83,3 +83,7 @@ def get_thresholded_values(sol,threshold):
     
 def error(truth, estimation):
     return np.linalg.norm(truth-estimation) / np.linalg.norm(truth)
+
+
+def accuracy(truth, estimation):
+    return (truth == estimation).mean()
