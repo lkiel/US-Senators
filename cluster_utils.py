@@ -8,6 +8,6 @@ def embed(laplacian,d):
     
     return eigenvectors[:,indexes][:,:d]
 
-def gen_kmeans(eigenvectors,k=3,random_state = 42):
+def gen_kmeans(eigenvectors, k=3, random_state = 42):
     means = KMeans(n_clusters=k, random_state=random_state).fit(eigenvectors)
-    return means.labels_,means.cluster_centers_
+    return means.labels_, means.cluster_centers_

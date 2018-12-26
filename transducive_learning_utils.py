@@ -81,3 +81,17 @@ def get_thresholded_values(sol,threshold):
     sol_bin[sol_bin < threshold] = -1
     return sol_bin
     
+    
+def get_mask(n,m):
+    idx = np.random.choice(np.arange(n), m, replace=False)
+    w = np.zeros(n)
+    w[idx] = 1
+    return w
+
+    
+def get_labels(feature_vector, threshold):
+    labels = feature_vector.copy()
+    labels[labels >= threshold] = 1
+    labels[labels < threshold] = -1
+    
+    return labels

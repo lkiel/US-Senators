@@ -6,6 +6,13 @@ def cosine_similarity(x,y):
     """
     return 0.5 * (1 + (np.dot(x,y))/(np.linalg.norm(x)*np.linalg.norm(y)))
     
+
+def euclidean_distance(x,y):
+    """
+    Given two vectors of the same length, return the euclidean distance between the two vectors.
+    """
+    return np.sqrt(np.sum(np.power(x-y,2)))
+    
     
 def gaussian_kernel(distance_matrix):
     """
@@ -14,13 +21,10 @@ def gaussian_kernel(distance_matrix):
     kernel_width = distance_matrix.mean()
     res = np.exp(-distance_matrix**2 / kernel_width**2)
     return res
-    
-
-def euclidean_distance(x,y):
-    """
-    Given two vectors of the same length, return the euclidean distance between the two vectors.
-    """
-    return np.sqrt(np.sum(np.power(x-y,2)))
+  
+  
+def identity_kernel(distance_matrix):
+    return distance_matrix
     
     
 def get_adjacency_multidistance(features_list, weights, distance_function, kernel_function, sparsify):
