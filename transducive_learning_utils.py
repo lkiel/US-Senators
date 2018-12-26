@@ -1,7 +1,8 @@
-from pyunlocbox import functions, solvers
 import scipy
-from scipy import sparse
 import numpy as np
+from pyunlocbox import functions, solvers
+from scipy import sparse
+from utils import accuracy
 
 def graph_pnorm_interpolation(gradient, P, x0=None, p=1., **kwargs):
     r"""
@@ -95,3 +96,50 @@ def get_labels(feature_vector, threshold):
     labels[labels < threshold] = -1
     
     return labels
+    
+    
+def reconstruct_signal(G, mask, labels_bin, threshold = 0, number_of_trials=100, verbose = 'NONE'):
+
+    sols = []
+    
+    for _ in range(number_of_trials):
+        sols.append(graph_pnorm_interpolation(
+            G.D,
+            P_wrapper(mask, labels_bin),
+            np.random.normal(loc=0, scale=0.1,size=len(labels_bin)), 
+            2,
+            verbosity=verbose
+        ))
+        
+    return get_thresholded_values(np.median(sols,axis=0), threshold)
+    
+    
+def compare_outcome(pred, labels):
+    true_results = dict(zip(*np.unique(labels.astype(int), return_counts=True)))
+    true_outcome = true_results.get(1,0) > true_results.get(-1,0)
+    
+    pred_results = dict(zip(*np.unique(pred.astype(int), return_counts=True)))
+    pred_outcome = pred_results.get(1,0) > pred_results.get(-1,0)
+    
+    #print("True: "+str(true_results) + " Pred: " + str(pred_results))
+    
+    return pred_outcome == true_outcome
+    
+    
+def predict_and_compare(G, df, senator_selection):
+    individual_accuracies = []
+    outcome_comparison = []
+
+    sencount, votecount = df.shape
+    
+    for i in range(votecount):
+        labels_bin = get_labels(df.values[:,i], 0.0)
+        mask = np.zeros(sencount)
+        mask[senator_selection] = 1
+        pred = reconstruct_signal(G, mask, labels_bin, number_of_trials=50)
+        individual_accuracies.append(accuracy(pred,labels_bin))
+        outcome_comparison.append(compare_outcome(pred, labels_bin))
+        
+    print("Outcome accuracy: " + str(np.mean(outcome_comparison)))
+    
+    return individual_accuracies, outcome_comparison
