@@ -1,12 +1,70 @@
 import networkx as nx
 import matplotlib.pyplot as plt
 import numpy as np
+import matplotlib.image as mpimg
+import matplotlib.patches as patches
+import matplotlib.lines as mlines
 
 def plot_adjacency(adjacency):
     plt.figure(figsize=(9,9))
     plt.spy(adjacency, markersize=3)
     plt.title('adjacency matrix')
     plt.show()
+    
+    
+def plot_prediction(G_pyGSP, sol, labels, mask):
+    
+    G = nx.from_numpy_matrix(G_pyGSP.W.todense())
+    
+    true_pos = np.argwhere((sol == labels) & (sol == 1))[:,0].tolist()
+    true_neg = np.argwhere((sol == labels) & (sol == -1))[:,0].tolist()
+    false_pos = np.argwhere((sol != labels) & (sol == 1))[:,0].tolist()
+    false_neg = np.argwhere((sol != labels) & (sol == -1))[:,0].tolist()
+    measured_pos = np.argwhere((mask==1) & (labels==1)).squeeze().tolist()
+    measured_neg = np.argwhere((mask==1) & (labels==-1)).squeeze().tolist()
+    
+    fig = plt.figure(figsize=(20,15))
+    
+    pos = nx.spring_layout(G,seed=2018, iterations=400, k=2.25)
+        
+    # Draw edges
+    e_weights = nx.get_edge_attributes(G,'weight')
+    e_weights = np.array(list(e_weights.values()))
+    e_weights = 0.5 + 2 * (e_weights - np.min(e_weights))/(np.max(e_weights) - np.min(e_weights))
+    nx.draw_networkx_edges(G, pos, width=e_weights, alpha=0.2, style='dotted')
+    
+    # Draw true positives
+    if len(true_pos) > 0:
+        nc = nx.draw_networkx_nodes(G, pos, nodelist=true_pos, node_color='limegreen', linewidths=4, edgecolors='forestgreen')
+    if len(true_neg) > 0:
+        nc = nx.draw_networkx_nodes(G, pos, nodelist=true_neg, node_color='salmon', linewidths=4, edgecolors='crimson')
+    if len(false_pos) > 0:
+        nc = nx.draw_networkx_nodes(G, pos, nodelist=false_pos, node_color='limegreen', linewidths=4, edgecolors='crimson')
+    if len(false_neg) > 0:
+        nc = nx.draw_networkx_nodes(G, pos, nodelist=false_neg, node_color='salmon', linewidths=4, edgecolors='forestgreen')
+    if len(measured_pos) > 0:
+        nc = nx.draw_networkx_nodes(G, pos, nodelist=measured_pos, node_color='forestgreen', linewidths=4, edgecolors='forestgreen')
+    if len(measured_neg) > 0:
+        nc = nx.draw_networkx_nodes(G, pos, nodelist=measured_neg, node_color='crimson', linewidths=4, edgecolors='crimson')
+
+    plt.axis('off')
+    
+    tp = mlines.Line2D([], [], color='limegreen', marker='o', linestyle='', markeredgewidth=4, markeredgecolor='forestgreen', 
+                          markersize=20, label="True positive")
+    tn = mlines.Line2D([], [], color='salmon', marker='o', linestyle='', markeredgewidth=4, markeredgecolor='crimson', 
+                          markersize=20, label="True negative")
+    fp = mlines.Line2D([], [], color='limegreen', marker='o', linestyle='', markeredgewidth=4, markeredgecolor='crimson', 
+                          markersize=20, label="False positive")
+    fn = mlines.Line2D([], [], color='salmon', marker='o', linestyle='',  markeredgewidth=4, markeredgecolor='forestgreen',
+                          markersize=20, label="False negative")
+    mes = mlines.Line2D([], [], color='white', marker='s', linestyle='',  markeredgewidth=4, markeredgecolor='forestgreen',
+                          markersize=0, label="Filled = measured")
+
+    plt.legend(handles=[tp,tn,fp,fn,mes], prop={'size':20})
+    fig.suptitle("Signal reconstruction results", fontsize=24)
+
+        
+    return nc
 
 
 def plot_graph(G, node_color, edge_threshold=0.5, scale=None, highlight_node=[], ax=None, colormap=plt.get_cmap('Set1'), positions=None):
@@ -54,6 +112,9 @@ def plot_graph(G, node_color, edge_threshold=0.5, scale=None, highlight_node=[],
     return nc
     
     
+
+    
+    
 def plot_signal(adjacency, signal, labels=None, **kwargs):
 
     plt.figure(figsize=(20,15))
@@ -91,3 +152,21 @@ def show_political_spectrum(embedding, n, colors, senators_party):
 
     plt.text(embedding[n-1,0] - 0.0035, 0.65, "You", fontsize=12)
     plt.show()
+    
+    
+def show_portraits(similar_senators):
+    # read images
+    s = "data/senate_members/{id}.jpg"
+    t = "{name} ({party})"
+
+    # display images
+    fig, ax = plt.subplots(1,3, figsize=(15,6))
+    fig.suptitle("Senators whose voting positions are the most similar to you", fontsize=32)
+    plt.subplots_adjust(top=0.75)
+
+    for i in range(3):
+        ax[i].axis('off')
+        im = ax[i].imshow(mpimg.imread(s.format(id=similar_senators.index[i])));
+        ax[i].set_title(t.format(name=similar_senators['name'].iloc[i], party=similar_senators['party'].iloc[i]), fontsize=24)
+        patch = patches.FancyBboxPatch((0, 2.5), boxstyle="round,rounding_size=10", width=220, height=270, transform=ax[i].transData)
+        im.set_clip_path(patch)
