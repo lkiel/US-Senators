@@ -81,9 +81,3 @@ def get_thresholded_values(sol,threshold):
     sol_bin[sol_bin < threshold] = -1
     return sol_bin
     
-def error(truth, estimation):
-    return np.linalg.norm(truth-estimation) / np.linalg.norm(truth)
-
-
-def accuracy(truth, estimation):
-    return (truth == estimation).mean()
