@@ -20,8 +20,8 @@ def plot_prediction(G_pyGSP, sol, labels, mask):
     true_neg = np.argwhere((sol == labels) & (sol == -1))[:,0].tolist()
     false_pos = np.argwhere((sol != labels) & (sol == 1))[:,0].tolist()
     false_neg = np.argwhere((sol != labels) & (sol == -1))[:,0].tolist()
-    measured_pos = np.argwhere((mask==1) & (labels==1)).squeeze().tolist()
-    measured_neg = np.argwhere((mask==1) & (labels==-1)).squeeze().tolist()
+    measured_pos = np.argwhere((mask==1) & (labels==1))[:,0].tolist()
+    measured_neg = np.argwhere((mask==1) & (labels==-1))[:,0].tolist()
     
     fig = plt.figure(figsize=(20,15))
     

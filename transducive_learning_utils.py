@@ -76,11 +76,11 @@ def P_wrapper(mask, labels_bin):
     return lambda a: labels_bin * mask + (1-mask) * a
     
     
-def get_thresholded_values(sol,threshold):
-    sol_bin = sol.copy()
-    sol_bin[sol_bin > threshold] = 1
-    sol_bin[sol_bin < threshold] = -1
-    return sol_bin
+def get_thresholded_values(v,threshold):
+    v_bin = v.copy()
+    v_bin[v_bin >= threshold] = 1
+    v_bin[v_bin < threshold] = -1
+    return v_bin
     
     
 def get_mask(n,m):
@@ -89,14 +89,6 @@ def get_mask(n,m):
     w[idx] = 1
     return w
 
-    
-def get_labels(feature_vector, threshold):
-    labels = feature_vector.copy()
-    labels[labels >= threshold] = 1
-    labels[labels < threshold] = -1
-    
-    return labels
-    
     
 def reconstruct_signal(G, mask, labels_bin, threshold = 0, number_of_trials=100, verbose = 'NONE'):
 
@@ -107,7 +99,7 @@ def reconstruct_signal(G, mask, labels_bin, threshold = 0, number_of_trials=100,
             G.D,
             P_wrapper(mask, labels_bin),
             np.random.normal(loc=0, scale=0.1,size=len(labels_bin)), 
-            2,
+            1.,
             verbosity=verbose
         ))
         
@@ -134,7 +126,7 @@ def predict_and_compare(G, df, senator_selection):
     sencount, votecount = df.shape
     
     for i in range(votecount):
-        labels_bin = get_labels(df.values[:,i], 0.0)
+        labels_bin = get_thresholded_values(df.values[:,i], 0.0)
         mask = np.zeros(sencount)
         mask[senator_selection] = 1
         _, pred = reconstruct_signal(G, mask, labels_bin, number_of_trials=50)
