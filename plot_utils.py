@@ -127,22 +127,42 @@ def plot_signal(adjacency, signal, labels=None, **kwargs):
     
     return plot_graph(G,np.round(signal,5), edge_threshold = np.max(adjacency) * 0.9, **kwargs)
     
+   
+def show_2D_embedding(embedding, senators_party):
+
+    colors = {'R':'red','D':'blue','I':'green'}
+
+    plt.figure(figsize=(10,7))
+
+    n = len(embedding)
+    for i in range(n-1):
+        plt.scatter(embedding[i,0], embedding[i,1], facecolors='none', edgecolors=colors[senators_party[i]])
+        
+    plt.scatter(embedding[n-1,0], embedding[n-1,1], color='orange', s=200, marker='v')
+    plt.xlabel("Coordinate on first eigenvector")
+    plt.ylabel("Coordinate on second eigenvector")
+    plt.show()
+    
     
 def show_political_spectrum(embedding, n, colors, senators_party):
     fig = plt.figure(figsize=(15,2))
     ax = plt.subplot(111)
-    ax.set_title("Your position on the political spectrum")
+    ax.set_title("Your position on the political spectrum (first eigenvector)")
 
-    for i in range(n-1):
-        ax.scatter(embedding[i,0], np.random.normal(.5,.05), alpha=0.25, color=colors[senators_party[i]])
+    n = len(embedding)
+    sen_embedding = embedding[:n-1,:]
+
+    reps = sen_embedding[senators_party == 'R',:]
+    dems = sen_embedding[senators_party == 'D',:]
+    inds = sen_embedding[senators_party == 'I',:]
+
+    ax.scatter(reps[:,0], np.random.normal(.5,.05, size=len(reps)), alpha=0.25, color='r')
+    ax.scatter(dems[:,0], np.random.normal(.5,.05, size=len(dems)), alpha=0.25, color='b')
+    ax.scatter(inds[:,0], np.random.normal(.5,.05, size=len(inds)), alpha=0.25, color='g')
         
-    #ax.scatter(embedding[n-1,0], embedding[n-1,1], color='black', s=100, marker='H')
-    xs = np.linspace(np.min(embedding[:,0]),np.max(embedding[:,0]),100)
-
-    #ax.plot(xs, density(xs))
     ax.set_xticks([np.min(embedding[:,0]),np.max(embedding[:,0])])
     ax.set_ylim([0,1])
-    ax.set_xticklabels(['< liberal','conservative >'])
+    ax.set_xticklabels(['< liberal','conservative >'] if np.mean(reps) > np.mean(dems) else ['< conservative','liberal >'])
     plt.tick_params(axis='x', which='both', bottom=False)
     ax.spines['right'].set_visible(False)
     ax.spines['left'].set_visible(False)
