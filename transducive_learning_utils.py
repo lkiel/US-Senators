@@ -111,7 +111,8 @@ def reconstruct_signal(G, mask, labels_bin, threshold = 0, number_of_trials=100,
             verbosity=verbose
         ))
         
-    return get_thresholded_values(np.median(sols,axis=0), threshold)
+    sols = np.median(sols,axis=0)
+    return sols, get_thresholded_values(sols, threshold)
     
     
 def compare_outcome(pred, labels):
@@ -136,7 +137,7 @@ def predict_and_compare(G, df, senator_selection):
         labels_bin = get_labels(df.values[:,i], 0.0)
         mask = np.zeros(sencount)
         mask[senator_selection] = 1
-        pred = reconstruct_signal(G, mask, labels_bin, number_of_trials=50)
+        _, pred = reconstruct_signal(G, mask, labels_bin, number_of_trials=50)
         individual_accuracies.append(accuracy(pred,labels_bin))
         outcome_comparison.append(compare_outcome(pred, labels_bin))
         
