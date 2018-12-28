@@ -131,7 +131,7 @@ def plot_signal(adjacency, signal, labels=None, **kwargs):
 def show_2D_embedding(embedding, senators_party):
 
     colors = {'R':'red','D':'blue','I':'green'}
-
+    plt.title('Voting positions Connectivity plot')
     plt.figure(figsize=(10,7))
 
     n = len(embedding)
@@ -190,3 +190,5 @@ def show_portraits(similar_senators):
         ax[i].set_title(t.format(name=similar_senators['name'].iloc[i], party=similar_senators['party'].iloc[i]), fontsize=24)
         patch = patches.FancyBboxPatch((0, 2.5), boxstyle="round,rounding_size=10", width=220, height=270, transform=ax[i].transData)
         im.set_clip_path(patch)
+    
+    plt.show()
