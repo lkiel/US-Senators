@@ -114,7 +114,7 @@ def compare_outcome(pred, labels):
     pred_results = dict(zip(*np.unique(pred.astype(int), return_counts=True)))
     pred_outcome = pred_results.get(1,0) > pred_results.get(-1,0)
     
-    #print("True: "+str(true_results) + " Pred: " + str(pred_results))
+    print("True: "+str(true_results) + " Pred: " + str(pred_results))
     
     return pred_outcome == true_outcome
     
@@ -129,7 +129,7 @@ def predict_and_compare(G, df, senator_selection):
         labels_bin = get_thresholded_values(df.values[:,i], 0.0)
         mask = np.zeros(sencount)
         mask[senator_selection] = 1
-        _, pred = reconstruct_signal(G, mask, labels_bin, number_of_trials=50)
+        _, pred = reconstruct_signal(G, mask, labels_bin, number_of_trials=100)
         individual_accuracies.append(accuracy(pred,labels_bin))
         outcome_comparison.append(compare_outcome(pred, labels_bin))
         
