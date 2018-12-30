@@ -25,7 +25,7 @@ def plot_prediction(G_pyGSP, sol, labels, mask):
     
     fig = plt.figure(figsize=(20,15))
     
-    pos = nx.spring_layout(G,seed=2018, iterations=400, k=2.25)
+    pos = nx.spring_layout(G,seed=131, iterations=500, k=2.65)
         
     # Draw edges
     e_weights = nx.get_edge_attributes(G,'weight')
@@ -61,7 +61,7 @@ def plot_prediction(G_pyGSP, sol, labels, mask):
                           markersize=0, label="Filled = measured")
 
     plt.legend(handles=[tp,tn,fp,fn,mes], prop={'size':20})
-    fig.suptitle("Signal reconstruction results", fontsize=24)
+    fig.suptitle("Signal reconstruction results measuring {prop}% of realizations".format(prop = np.sum(mask) / len(mask), fontsize=24)
 
         
     return nc
@@ -69,13 +69,13 @@ def plot_prediction(G_pyGSP, sol, labels, mask):
 
 def plot_graph(G, node_color, edge_threshold=0.5, scale=None, highlight_node=[], ax=None, colormap=plt.get_cmap('Set1'), positions=None):
     
-    pos = nx.spring_layout(G,seed=2018, iterations=400, pos=positions, k=2.25)
+    pos = nx.spring_layout(G,seed=131, iterations=500, pos=positions, k=2.65)
     
     e_weights = nx.get_edge_attributes(G,'weight')
     e_weights = np.array(list(e_weights.values()))
     e_weights = 0.5 + 2 * (e_weights - np.min(e_weights))/(np.max(e_weights) - np.min(e_weights))
     
-    nx.draw_networkx_edges(G, pos, width=e_weights, alpha=0.2, ax=ax, style='dotted')
+    nx.draw_networkx_edges(G, pos, width=e_weights, alpha=0.1, ax=ax, style='dotted')
     
     if scale is not None:
         vmin = scale[0]
@@ -96,7 +96,7 @@ def plot_graph(G, node_color, edge_threshold=0.5, scale=None, highlight_node=[],
     nc = nx.draw_networkx_nodes(G,pos,with_labels=True, nodelist=normal_nodes, node_color=node_color[normal_nodes_indices], cmap=colormap,
                                vmin=vmin,vmax=vmax,node_size=300,ax=ax, edgecolors='black', alpha=0.6)
                                
-    nx.draw_networkx_labels(G, pos, alpha=0.7, color='gray', ax=ax)
+    nx.draw_networkx_labels(G, pos, alpha=0.7, font_color='black', ax=ax)
                             
     nc = nx.draw_networkx_nodes(G,pos,with_labels=True, nodelist=special_nodes, node_color=[0.6]*len(highlight_node), cmap=colormap,
                                vmin=vmin,vmax=vmax,node_size=2000,ax=ax, edgecolors='black', alpha=1.0, node_shape='H')
