@@ -33,3 +33,23 @@ def print_info(id):
         print("\n\033[1mShort description: \033[0m" + str(jObj[0]['summary_short']))
         
     print("\n\n\n")
+    
+def print_info_short(id):
+
+    bill_id, congress, roll_call, session = id.split('-')
+
+    vote_url = "https://www.senate.gov/legislative/LIS/roll_call_lists/roll_call_vote_cfm.cfm?congress=115&session={}&vote={:05d}"
+    
+    
+    print("\033[1m============== INFORMATION REGARDING " + str(id) + " ============== \033[0m")
+    
+    bill_url = "https://api.propublica.org/congress/v1/115/bills/{bill_id}.json"
+    res = requests.get(url = bill_url.format(bill_id=bill_id), headers = HEADERS)
+    jObj = json.loads(res.text)
+    
+    if 'results' in jObj and len(jObj['results']) > 0:
+        jObj = jObj['results']
+        print("\033[1mBill title: \033[0m" + str(jObj[0]['title']))
+        print("\n\033[1mBill url: \033[0m " + str(jObj[0]['govtrack_url']))
+        
+    print("\n")
