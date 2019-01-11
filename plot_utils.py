@@ -143,6 +143,18 @@ def show_2D_embedding(embedding, senators_party):
     plt.show()
     
     
+def show_2D_embedding(embedding, senators_party, ax):
+
+    colors = {'R':'red','D':'blue','I':'green'}
+
+    n = len(embedding)
+    for i in range(n-1):
+        ax.scatter(embedding[i,0], embedding[i,1], alpha=0.25, s=50, c=colors[senators_party[i]])
+        
+    ax.scatter(embedding[n-1,0], embedding[n-1,1], color='black', s=200, marker='x')
+    
+    
+    
 def show_political_spectrum(embedding, n, colors, senators_party):
     fig = plt.figure(figsize=(15,2))
     ax = plt.subplot(111)
