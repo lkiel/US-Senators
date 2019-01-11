@@ -131,13 +131,13 @@ def show_2D_embedding(embedding, senators_party):
 
     colors = {'R':'red','D':'blue','I':'green'}
     plt.title('Voting positions Connectivity plot')
-    plt.figure(figsize=(10,7))
+    plt.figure(figsize=(6,4))
 
     n = len(embedding)
     for i in range(n-1):
-        plt.scatter(embedding[i,0], embedding[i,1], facecolors='none', edgecolors=colors[senators_party[i]])
+        plt.scatter(embedding[i,0], embedding[i,1], alpha=0.25, s=50, c=colors[senators_party[i]])
         
-    plt.scatter(embedding[n-1,0], embedding[n-1,1], color='orange', s=200, marker='v')
+    plt.scatter(embedding[n-1,0], embedding[n-1,1], color='black', s=200, marker='x')
     plt.xlabel("Coordinate on first eigenvector")
     plt.ylabel("Coordinate on second eigenvector")
     plt.show()
