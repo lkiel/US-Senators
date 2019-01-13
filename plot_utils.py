@@ -25,7 +25,7 @@ def plot_prediction(G_pyGSP, sol, labels, mask):
     
     fig = plt.figure(figsize=(20,15))
     
-    pos = nx.spring_layout(G,seed=2018, iterations=500, k=2.5)
+    pos = nx.spring_layout(G,seed=2018, iterations=500, k=5.5)
         
     # Draw edges
     e_weights = nx.get_edge_attributes(G,'weight')
