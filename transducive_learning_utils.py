@@ -76,10 +76,11 @@ def P_wrapper(mask, labels_bin):
     return lambda a: labels_bin * mask + (1-mask) * a
     
     
-def get_thresholded_values(v,threshold):
+def get_thresholded_values(v,threshold, epsilon = 1e-2):
     v_bin = v.copy()
-    v_bin[v_bin >= threshold] = 1
-    v_bin[v_bin < threshold] = -1
+    v_bin[v_bin > threshold + epsilon] = 1
+    v_bin[v_bin < threshold - epsilon] = -1
+    v_bin[np.logical_and((v_bin <= threshold + epsilon) , (v_bin >= threshold - epsilon))] = 0
     return v_bin
     
     
@@ -114,7 +115,7 @@ def compare_outcome(pred, labels):
     pred_results = dict(zip(*np.unique(pred.astype(int), return_counts=True)))
     pred_outcome = pred_results.get(1,0) > pred_results.get(-1,0)
     
-    print("True: "+str(true_results) + " Pred: " + str(pred_results))
+    print("True: "+str(true_results) + " Pred: " + str(pred_results) + " Correct: " +str(pred_outcome == true_outcome))
     
     return pred_outcome == true_outcome
     
