@@ -104,7 +104,7 @@ def reconstruct_signal(G, mask, labels_bin, threshold = 0, number_of_trials=100,
             verbosity=verbose
         ))
         
-    sols = np.median(sols,axis=0)
+    sols = np.mean(sols,axis=0)
     return sols, get_thresholded_values(sols, threshold)
     
     

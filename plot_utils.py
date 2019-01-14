@@ -153,8 +153,33 @@ def show_2D_embedding_ax(embedding, senators_party, ax):
     ax.scatter(embedding[n-1,0], embedding[n-1,1], color='black', s=200, marker='x')
     
     
+def plot_embeddings(embeddings, selections, senators_party):
     
-def show_political_spectrum(embedding, n, colors, senators_party):
+    fig, axes = plt.subplots(2, 2, figsize=(10,6), sharex=True)
+
+    for i in range(2):
+        for j in range(2):
+            show_2D_embedding_ax(embeddings[i*2 + j], senators_party, axes[i,j])
+            axes[i,j].set_title("votes: " + str(selections[i + 2*j])),
+        
+    tp = mlines.Line2D([], [], color='blue', marker='o', linestyle='', 
+                          markersize=10, alpha=0.25, label="Democrat")
+    tn = mlines.Line2D([], [], color='red', marker='o', linestyle='', 
+                          markersize=10, alpha=0.25, label="Republican")
+    fp = mlines.Line2D([], [], color='green', marker='o', linestyle='', 
+                          markersize=10, alpha=0.25, label="Independent")
+    x = mlines.Line2D([], [], color='black', marker='x', linestyle='', 
+                          markersize=10, label="New point")
+
+    fig.text(0.5, 0.04, 'Coordinate on first eigenvector', ha='center')
+    fig.text(0.04, 0.5, 'Coordinate on second eigenvector', va='center', rotation='vertical')
+
+    plt.legend(handles=[tp,tn,fp,x], loc='lower center', bbox_to_anchor=(-0.1,2.4), ncol=4)
+
+    plt.savefig("embeddings.png", bbox_inches='tight')
+ 
+    
+def show_political_spectrum(embedding, colors, senators_party):
     fig = plt.figure(figsize=(15,2))
     ax = plt.subplot(111)
     ax.set_title("Your position on the political spectrum (first eigenvector)")
