@@ -160,7 +160,7 @@ def plot_embeddings(embeddings, selections, senators_party):
     for i in range(2):
         for j in range(2):
             show_2D_embedding_ax(embeddings[i*2 + j], senators_party, axes[i,j])
-            axes[i,j].set_title("votes: " + str(selections[i + 2*j])),
+            axes[i,j].set_title("votes: " + str(selections[i*2 + j])),
         
     tp = mlines.Line2D([], [], color='blue', marker='o', linestyle='', 
                           markersize=10, alpha=0.25, label="Democrat")
