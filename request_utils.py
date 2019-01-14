@@ -11,7 +11,7 @@ HEADERS = {"X-Api-Key": API_KEY}
 
 def print_info(id):
 
-    bill_id, congress, roll_call, session = id.split('-')
+    bill_id, congress, roll_call, session, *rest = id.split('-')
 
     vote_url = "https://www.senate.gov/legislative/LIS/roll_call_lists/roll_call_vote_cfm.cfm?congress=115&session={}&vote={:05d}"
     

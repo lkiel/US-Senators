@@ -27,23 +27,22 @@ def identity_kernel(distance_matrix):
     return distance_matrix
     
     
-def get_adjacency_multidistance(features_list, weights, distance_function, kernel_function, sparsify):
+def get_adjacency_matrix(features, distance_function, kernel_function, sparsification_function):
     '''
-    Construct an adjacency matrix matrix using  the features passed in parameter.
-    The final result is computed as a weighted sum of the distances matrices obtained using the different features 
+    Construct an adjacency matrix matrix by computing the similarities between feature vectors passed as parameters.
     '''
-    number_of_nodes = features_list[0].shape[0]
+    number_of_nodes = features.shape[0]
     result = np.zeros((number_of_nodes, number_of_nodes))
     meshgrid_nodes = np.mgrid[:number_of_nodes,:number_of_nodes]
     
-    for i, features in enumerate(features_list):
-        distance_matrix = np.apply_along_axis(lambda x: distance_function(features[x[0]],features[x[1]]) ,0,meshgrid_nodes)
-        kernel = kernel_function(distance_matrix)
-        np.fill_diagonal(kernel, 0)
-        
-        result += weights[i] * sparsify[i](kernel)
+    distance_matrix = np.apply_along_axis(lambda x: distance_function(features[x[0]],features[x[1]]) , 0, meshgrid_nodes)
+    kernel = kernel_function(distance_matrix)
+    np.fill_diagonal(kernel, 0)
+    
+    result = sparsification_function(kernel)
         
     return result  
+
     
 def sparsify_with_limit(adjacency, limit = 0.35):
     """
@@ -79,3 +78,14 @@ def sparsify_with_max_neighbors(adjacency, max_neighbors = 45):
             counter += 1
                    
     return res
+    
+    
+def print_graph_specs(adjacency):
+    print("Clustering coefficient: " + str(nx.average_clustering(nx.from_numpy_matrix(adjacency))))
+    print("Diameter: " + str(nx.diameter(nx.from_numpy_matrix(adjacency))))
+    plt.figure(figsize=(5,3))
+    plt.hist(adjacency.sum(1), bins=range(20), color='silver', lw=1, edgecolor='black')
+    plt.title("Node degree distribution")
+    plt.savefig("deg_distribution.png")
+    plt.show()
+
