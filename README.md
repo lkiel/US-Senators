@@ -1,7 +1,11 @@
-# U.S. Senators: Voting Patterns Study
+# U.S. Senators: A Voting Pattern Study
 
 ## Introduction 
-Predicting how Congressional legislators vote is important for understanding their past and future behavior. In this project, we explore U.S. senators voting patterns using a network-based approach. Our main goal is to use Congress roll call votes results on bills to predict political stances of individuals and voting outcome based on a restricted set of features. The latter will consist of carefully chosen votes which are designed to convey the highest information on senators voting behaviour. We will also show that we can accurately predict the outcome of a vote only by looking at a small, well-chosen subset of senators’ voting positions. 
+Predicting how Congressional legislators vote is important for understanding their past and future behavior. In this project, we explore U.S. senators voting patterns using a network-based approach. 
+
+### Research questions
+1. Can we predict the political stances of individuals as well as which senators are the closest to their ideology ?
+2. Can a specific subset of senators, called the swing votes, be used to accurately predict the outcome of a vote ? 
 
 ## Notebooks
 * **Main:** contains a step by step demonstration of the main results shown in the report.
