@@ -67,9 +67,9 @@ def plot_prediction(G_pyGSP, sol, labels, mask):
     return nc
 
 
-def plot_graph(G, node_color, edge_threshold=0.5, scale=None, highlight_node=[], ax=None, colormap=plt.get_cmap('Set1'), positions=None):
+def plot_graph(G, node_color, edge_threshold=0.5, scale=None, highlight_node=[], ax=None, colormap=plt.get_cmap('Set1'), positions=None, k=5.5):
     
-    pos = nx.spring_layout(G, weight='weight',  seed=2018, iterations=500, pos=positions, k=5.5)
+    pos = nx.spring_layout(G, weight='weight',  seed=2018, iterations=500, pos=positions, k=k)
     
     e_weights = nx.get_edge_attributes(G,'weight')
     e_weights = np.array(list(e_weights.values()))
@@ -130,7 +130,6 @@ def plot_signal(adjacency, signal, labels=None, **kwargs):
 def show_2D_embedding(embedding, senators_party):
 
     colors = {'R':'red','D':'blue','I':'green'}
-    plt.title('Voting positions Connectivity plot')
     plt.figure(figsize=(6,4))
 
     n = len(embedding)
