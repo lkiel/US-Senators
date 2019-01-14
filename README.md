@@ -1,4 +1,4 @@
-# Political affiliation identification and vote prediction on U.S. senators
+# U.S. Senators: Voting Patterns Study
 
 ## Introduction 
 Predicting how Congressional legislators vote is important for understanding their past and future behavior. In this project, we explore U.S. senators voting patterns using a network-based approach. Our main goal is to use Congress roll call votes results on bills to predict political stances of individuals and voting outcome based on a restricted set of features. The latter will consist of carefully chosen votes which are designed to convey the highest information on senators voting behaviour. We will also show that we can accurately predict the outcome of a vote only by looking at a small, well-chosen subset of senators’ voting positions. 
