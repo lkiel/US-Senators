@@ -21,7 +21,23 @@ def split_dataframe(frac, df):
     
     return df_train, df_test
     
+def split_dataframe_into_chunks(number, df):
+    _, cols = df.shape
+    indices = np.arange(cols)
+    np.random.shuffle(indices)
+    size = (int)(np.ceil(cols/number))
+    res = []
+    lower_i = 0
+
+    for higher_i in range(size,cols,size):
+        res.append(df.iloc[:,indices[lower_i:higher_i]])
+        lower_i += size
+
+    if higher_i != cols:
+        res.append(df.iloc[:,indices[higher_i:cols]])
     
+    return res
+	
 def append_new_column(old_adjacency, newcol):
 
     n = len(old_adjacency)

@@ -108,19 +108,20 @@ def reconstruct_signal(G, mask, labels_bin, threshold = 0, number_of_trials=100,
     return sols, get_thresholded_values(sols, threshold)
     
     
-def compare_outcome(pred, labels):
+def compare_outcome(pred, labels,verbose=True):
     true_results = dict(zip(*np.unique(labels.astype(int), return_counts=True)))
     true_outcome = true_results.get(1,0) > true_results.get(-1,0)
     
     pred_results = dict(zip(*np.unique(pred.astype(int), return_counts=True)))
     pred_outcome = pred_results.get(1,0) > pred_results.get(-1,0)
     
-    print("True: "+str(true_results) + " Pred: " + str(pred_results) + " Correct: " +str(pred_outcome == true_outcome))
+    if verbose:
+	    print("True: "+str(true_results) + " Pred: " + str(pred_results) + " Correct: " +str(pred_outcome == true_outcome))
     
     return pred_outcome == true_outcome
     
     
-def predict_and_compare(G, df, senator_selection):
+def predict_and_compare(G, df, senator_selection,verbose = True):
     individual_accuracies = []
     outcome_comparison = []
 
@@ -132,8 +133,9 @@ def predict_and_compare(G, df, senator_selection):
         mask[senator_selection] = 1
         _, pred = reconstruct_signal(G, mask, labels_bin, number_of_trials=100)
         individual_accuracies.append(accuracy(pred,labels_bin))
-        outcome_comparison.append(compare_outcome(pred, labels_bin))
-        
-    print("Outcome accuracy: " + str(np.mean(outcome_comparison)))
+        outcome_comparison.append(compare_outcome(pred, labels_bin,verbose))
+		
+    if verbose:
+	    print("Outcome accuracy: " + str(np.mean(outcome_comparison)))
     
     return individual_accuracies, outcome_comparison
