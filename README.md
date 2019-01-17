@@ -15,7 +15,7 @@ Predicting how Congressional legislators vote is important for understanding the
 ## Helper functions
 Our project required some boilerplate code, especially for graph visualization that we chose to factorize in helper modules. Their contents are briefly summarized below.
 
-* **cluster_utils.py** 
+* **cluster_utils.py** Helper functions for running the KMean algorithm.
 * **plot_utils.py** All the boilerplate code required for creating the graph and the embedding vizualizations.
 * **request_utils.py** Code fetching bill and roll call vote information from the relevant U.S governmental websites.
 * **transductive_learning_utils.py** Code for running the variational minimization problem.
