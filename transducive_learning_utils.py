@@ -116,7 +116,7 @@ def compare_outcome(pred, labels,verbose=True):
     pred_outcome = pred_results.get(1,0) > pred_results.get(-1,0)
     
     if verbose:
-	    print("Ground truth: \t"+ '{:25s}'.format(str(true_results)) + " Prediction: \t" + '{:25s}'.format(str(pred_results)) + " \t Correct outcome: " +str(pred_outcome == true_outcome))
+	    print("Ground truth: "+ '{:25s}'.format(str(true_results)) + " Prediction: " + '{:25s}'.format(str(pred_results)) + " Correct outcome: " +str(pred_outcome == true_outcome))
     
     return pred_outcome == true_outcome
     
