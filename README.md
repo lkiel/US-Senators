@@ -10,7 +10,7 @@ Predicting how Congressional legislators vote is important for understanding the
 ## Notebooks
 * **Main:** contains a step by step demonstration of the main results shown in the report.
 * **Feature-Engineering:**  contains all the code used to process the raw data into a format that is convenient to work with
-* **Data-Acquisition:** contains all the code used to retrieve the dataset from ProPublica's congres API
+* **Data-Acquisition:** contains all the code used to retrieve the dataset from ProPublica's congress API
 
 ## Helper functions
 Our project required some boilerplate code, especially for graph visualization that we chose to factorize in helper modules. Their contents are briefly summarized below.
