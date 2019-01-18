@@ -1,5 +1,5 @@
 # U.S. Senators: A Voting Pattern Study
-
+**NOTE:** Please create a file named "api_key.txt" in the project root folder containing your Prorepublica Congress API Key as a line before running the notebook
 ## Introduction 
 Predicting how Congressional legislators vote is important for understanding their past and future behavior. In this project, we explore U.S. senators voting patterns using a network-based approach. 
 
